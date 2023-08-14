@@ -1,0 +1,20 @@
+[submodule "client"]
+	path = client
+	url = ../client.git
+	ignore = all
+    branch = develop
+[submodule "server"]
+	path = server
+	url = ../server.git
+	ignore = all
+    branch = develop
+[submodule "worker"]
+	path = worker
+	url = ../worker.git
+	ignore = all
+    branch = develop
+[submodule "common"]
+	path = common
+	url = ../common.git
+	ignore = all
+    branch = develop

@@ -1,0 +1,13 @@
+<form [formGroup]="form">
+	<mat-form-field class="w-50">
+		<mat-label>Name</mat-label>
+		<input formControlName="name" matInput type="text">
+		<mat-error *ngIf="getError('name') as error">{{error.key}}</mat-error>
+	</mat-form-field>
+	<mat-checkbox formControlName="watch" class="ms-3">Watch for changes</mat-checkbox>
+	<mat-form-field class="w-100">
+		<mat-label>Directory</mat-label>
+		<input formControlName="path" matInput type="text">
+		<mat-error *ngIf="getError('path') as error">{{error.key}}</mat-error>
+	</mat-form-field>
+</form>

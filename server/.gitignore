@@ -1,0 +1,13 @@
+# IDEs
+.idea
+.vscode
+
+# Artifacts
+node_modules
+dist
+
+# Databases
+*.db
+*.db3
+*.sqlite
+*.sqlite3

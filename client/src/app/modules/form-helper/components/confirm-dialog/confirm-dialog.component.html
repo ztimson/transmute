@@ -1,0 +1,12 @@
+<h1 *ngIf="options.title" mat-dialog-title class="mb-3">{{options.title}}</h1>
+<div mat-dialog-content class="fh-dialog-form">
+	{{options.message}}
+</div>
+<div mat-dialog-actions style="justify-content: end">
+	<button mat-button [mat-dialog-close]="false">
+		{{options.cancelLabel}}
+	</button>
+	<button mat-raised-button color="primary" [mat-dialog-close]="true">
+		{{options.confirmLabel}}
+	</button>
+</div>

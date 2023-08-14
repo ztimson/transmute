@@ -1,0 +1,106 @@
+<div class="mb-2" [formGroup]="form">
+	<h2>General</h2>
+	<mat-form-field>
+		<mat-label>Job Priority</mat-label>
+		<mat-select formControlName="priority">
+			<mat-option value="">Auto</mat-option>
+			<mat-option value="healthcheck">Healthcheck</mat-option>
+			<mat-option value="transcode">Transcode</mat-option>
+		</mat-select>
+	</mat-form-field>
+</div>
+<div class="mb-3" [formGroup]="form">
+	<h2>Healthchecks</h2>
+	<mat-radio-group formControlName="healthcheck">
+		<mat-radio-button class="mb-3 me-2" value="">Disable</mat-radio-button>
+		<mat-radio-button class="mb-3 me-2" value="quick">Quick</mat-radio-button>
+		<mat-radio-button class="mb-3 me-2" value="frame-by-frame">Frame-by-Frame</mat-radio-button>
+	</mat-radio-group>
+	<div>
+		<mat-checkbox formControlName="deleteUnhealthy">
+			Delete unhealthy files
+		</mat-checkbox>
+	</div>
+</div>
+<div class="mb-2" [formGroup]="form">
+	<h2>Transcoding</h2>
+	<div>
+		<mat-checkbox formControlName="healthyOnly" class="mb-3 me-2">Only transcode healthy files</mat-checkbox>
+		<mat-checkbox formControlName="deleteOriginal" class="mb-3 me-2">Delete after transcoding</mat-checkbox>
+	</div>
+	<div>
+		<mat-form-field style="width: 175px">
+			<mat-label>Container</mat-label>
+			<mat-select formControlName="targetContainer">
+				<mat-option value="">Don't Change</mat-option>
+				<mat-option *ngFor="let c of containers" [value]="c[0]">{{c[1]}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field style="width: 175px">
+			<mat-label>Video Codec</mat-label>
+			<mat-select formControlName="targetVideoCodec">
+				<mat-option value="">Don't Change</mat-option>
+				<mat-option *ngFor="let v of videoCodecs" [value]="v[0]">{{v[1]}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field style="width: 175px">
+			<mat-label>Audio Codec</mat-label>
+			<mat-select formControlName="targetAudioCodec">
+				<mat-option value="">Don't Change</mat-option>
+				<mat-option *ngFor="let a of audioCodecs" [value]="a[0]">{{a[1]}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div>
+		<mat-checkbox class="mb-3 me-3" [(ngModel)]="sizeCutoff" [ngModelOptions]="{standalone: true}">
+			Stop transcoding if larger than
+		</mat-checkbox>
+		<mat-form-field style="width: 100px" floatLabel="always">
+			<mat-label>Original</mat-label>
+			<input class="text-end hide-incrementor" matInput type="number" [disabled]="!sizeCutoff">
+			<span matTextSuffix>%</span>
+		</mat-form-field>
+	</div>
+</div>
+<div class="mb-4" [formGroup]="form">
+	<h2>Audio</h2>
+	<mat-checkbox [(ngModel)]="audioFilter" [ngModelOptions]="{standalone: true}">
+		Filter Audio
+	</mat-checkbox>
+	<div *ngIf="audioFilter">
+		<mat-form-field class="w-100">
+			<mat-label>Languages</mat-label>
+			<!--			<mat-chip-grid #aLangChips class="d-inline-flex">-->
+			<!--				<mat-chip-row *ngFor="let l of aLangs; let i = index" (removed)="removeLang(aLangs, i)">-->
+			<!--					{{l}} <button matChipRemove><mat-icon>cancel</mat-icon></button>-->
+			<!--				</mat-chip-row>-->
+			<!--			</mat-chip-grid>-->
+			<!--			<input class="d-inline" style="width: auto" [matChipInputFor]="aLangChips" (matChipInputTokenEnd)="addLang(aLangs, $event)"/>-->
+			<input matInput>
+			<mat-hint>
+				<span class="fw-bold">Warning:</span> Leaving blank will remove all audio tracks
+			</mat-hint>
+		</mat-form-field>
+	</div>
+</div>
+<div class="mb-4" [formGroup]="form">
+	<h2>Subtitles</h2>
+	<mat-checkbox [(ngModel)]="subFilter" [ngModelOptions]="{standalone: true}">
+		Filter Subtitles
+	</mat-checkbox>
+	<div *ngIf="subFilter">
+		<mat-form-field class="w-100">
+			<mat-label>Languages</mat-label>
+			<!--			<mat-chip-grid #aLangChips class="d-inline-flex">-->
+			<!--				<mat-chip-row *ngFor="let l of aLangs; let i = index" (removed)="removeLang(aLangs, i)">-->
+			<!--					{{l}} <button matChipRemove><mat-icon>cancel</mat-icon></button>-->
+			<!--				</mat-chip-row>-->
+			<!--			</mat-chip-grid>-->
+			<!--			<input class="d-inline" style="width: auto" [matChipInputFor]="aLangChips" (matChipInputTokenEnd)="addLang(aLangs, $event)"/>-->
+			<input matInput>
+			<mat-hint>
+				<span class="fw-bold">Warning:</span> Leaving blank will remove all subtitles
+			</mat-hint>
+		</mat-form-field>
+	</div>
+</div>

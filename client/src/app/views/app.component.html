@@ -1,0 +1,149 @@
+<!-- Toolbar -->
+<tm-toolbar />
+<!-- Viewport -->
+<div class="max-height d-flex flex-row">
+	<!-- Main panel -->
+	<div class="d-flex flex-column p-4" style="flex-grow: 2">
+		<!-- Library Selector -->
+		<tm-library-selector [(selected)]="library" (selectedChange)="librarySelected($event)" />
+		<mat-accordion class="d-flex flex-column flex-grow-1" multi>
+			<!-- Charts -->
+			<mat-expansion-panel [disabled]="!metrics">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<span>Metrics</span>
+						<span class="ms-3 text-muted" *ngIf="metrics">Files: {{metrics.videos}}</span>
+						<span class="ms-3 text-muted" *ngIf="metrics">Size: {{ metrics.size | size }}</span>
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div *ngIf="metrics">
+					<div class="d-flex justify-content-between">
+						<tm-pichart title="Resolution" [data]="metrics.resolution"></tm-pichart>
+						<tm-pichart title="Container" [data]="metrics.container"></tm-pichart>
+						<tm-pichart title="Video Codec" [data]="metrics.videoCodec"></tm-pichart>
+						<tm-pichart title="Audio Codec" [data]="metrics.audioCodec"></tm-pichart>
+					</div>
+					<div class="d-flex justify-content-between">
+						<tm-pichart title="Health" [data]="metrics.health"></tm-pichart>
+						<tm-pichart title="Audio Languages" [data]="metrics.audioLang"></tm-pichart>
+						<tm-pichart title="Subtitle Languages" [data]="metrics.subLang"></tm-pichart>
+					</div>
+				</div>
+			</mat-expansion-panel>
+			<!-- Files -->
+			<mat-expansion-panel expanded class="expanded-fill d-flex flex-column">
+				<mat-expansion-panel-header>
+					<mat-panel-title>Files</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div class="d-flex flex-column flex-grow-1">
+					<!-- Table -->
+					<div class="flex-grow-0">
+						<table class="table">
+							<colgroup>
+								<col>
+								<col style="width: 125px">
+								<col style="width: 125px">
+								<col style="width: 125px">
+								<col style="width: 125px">
+								<col style="width: 125px">
+								<col style="width: 125px">
+							</colgroup>
+							<thead>
+							<tr>
+								<th>Filename</th>
+								<th>Resolution</th>
+								<th>Container</th>
+								<th>Video Codec</th>
+								<th>Audio Codec</th>
+								<th># Audio</th>
+								<th># Subtitle</th>
+								<th>Size</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let v of videos">
+								<td>
+									<span class="me-3">{{v.name}}</span>
+									<mat-chip *ngIf="v.healthy == null">Unknown</mat-chip>
+									<mat-chip *ngIf="v.healthy" style="background: #0f0">Healthy</mat-chip>
+									<mat-chip *ngIf="v.healthy == false" style="background: #f00">Unhealthy</mat-chip>
+								</td>
+								<td>{{v.resolution}}</td>
+								<td>{{v.container}}</td>
+								<td>{{v.videoCodec}}</td>
+								<td>{{v.audioCodec}}</td>
+								<td class="text-decoration-underline" [matTooltip]="list(v.audioTracks)">
+									{{v.audioTracks?.length}}
+								</td>
+								<td class="text-decoration-underline" [matTooltip]="list(v.subtitleTracks)">
+									{{v.subtitleTracks?.length}}
+								</td>
+								<td>{{v.size | size}}</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="flex-grow-1"></div>
+					<div class="flex-grow-0">
+						<mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="metrics?.videos ?? 0"></mat-paginator>
+					</div>
+				</div>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+	<!-- Side Panel -->
+	<div class="py-4 pe-4 h-100" style="flex-grow: 1">
+		<mat-card class="h-100">
+			<mat-card-content class="p-0">
+				<mat-tab-group>
+					<!-- Queue -->
+					<mat-tab label="Queue">
+						<mat-divider></mat-divider>
+					</mat-tab>
+					<!-- Logs -->
+					<mat-tab label="Logs">
+						<mat-divider></mat-divider>
+					</mat-tab>
+					<!-- Workers -->
+					<mat-tab label="Workers">
+						<mat-divider></mat-divider>
+						<div class="agent-list">
+							<div *ngFor="let n of nodes" style="height: auto" class="mt-2 agent">
+								<div class="d-flex px-3 align-items-center">
+									<mat-icon style="height: 32px; width: 32px; font-size: 32px"
+									          *ngIf="n.job == null">storage
+									</mat-icon>
+									<mat-icon style="height: 32px; width: 32px; font-size: 32px"
+									          *ngIf="n.job?.type == 'healthcheck'">troubleshoot
+									</mat-icon>
+									<mat-icon style="height: 32px; width: 32px; font-size: 32px"
+									          *ngIf="n.job?.type == 'transcode'">rotate_right
+									</mat-icon>
+									<div class="ms-3 d-flex flex-column flex-grow-1">
+										<span>{{n.name}}</span>
+										<span class="text-muted">
+											State: {{n.job ? n.job.type.toUpperCase() : 'IDLE'}}
+										</span>
+									</div>
+									<div class="h-100">
+										<button mat-icon-button class="mb-2 agent-settings">
+											<mat-icon>settings</mat-icon>
+										</button>
+									</div>
+								</div>
+								<div *ngIf="n.job?.file">
+									<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+									<div class="d-flex justify-content-between text-muted mt-2 px-3">
+										<div>{{n.job?.file?.name}}</div>
+										<div>60%</div>
+									</div>
+								</div>
+								<mat-divider class="mt-2"></mat-divider>
+							</div>
+						</div>
+					</mat-tab>
+				</mat-tab-group>
+			</mat-card-content>
+		</mat-card>
+	</div>
+</div>

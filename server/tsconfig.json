@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"module": "CommonJS",
+		"esModuleInterop": true,
+		"target": "es6",
+		"noImplicitAny": false,
+		"moduleResolution": "node",
+		"inlineSourceMap": true,
+		"outDir": "dist",
+		"baseUrl": ".",
+		"paths": {
+			"*": [
+				"node_modules/*"
+			]
+		},
+		"lib": [
+			"dom",
+			"es2021"
+		]
+	},
+	"include": [
+		"src/**/*",
+		"migrations/**/*"
+	]
+}

@@ -1,0 +1,37 @@
+version: '3.8'
+
+service:
+  server:
+    image: transcode-server
+    ports:
+      - 4200:80 # WebUI Port
+    networks:
+      - default
+    volumes:
+      - data:/app/db.sqlite3 # Data persistence
+
+      # Remove one of the following lines
+      - media:/mnt/media # Using NAS (Complete media volume configuration bellow)
+      - /absolute/path/example:/mnt/media # Use local filesystem (Delete media configuration bellow)
+
+  worker:
+    image: transcode-worker
+    environment:
+      SERVER_URL: 'http://server:4200' # Server service URL (above)
+    networks:
+      - default
+    volumes:
+      # Remove one of the following lines
+      - media:/mnt/media # Using NAS (Complete media volume configuration bellow)
+      - /absolute/path/example:/mnt/media # Use local filesystem (Delete media configuration bellow)
+
+networks:
+  default:
+
+volumes:
+  data:
+  media: # ---- CONFIGURE OR DELETE ME ----
+    driver_opts:
+      type: 'nfs'
+      o: 'addr=<NAS IP>,nolock,soft,rw'
+      device: ':<PATH on NAS>'

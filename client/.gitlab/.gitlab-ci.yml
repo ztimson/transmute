@@ -1,0 +1,86 @@
+image: node:18
+
+npm:
+  stage: build
+  cache:
+    - key:
+        files:
+          - package-lock.json
+      paths:
+        - node_modules
+      policy: pull-push
+    - key: $CI_PIPELINE_ID
+      paths:
+        - dist
+      policy: push
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+audit:
+  stage: test
+  cache:
+    - key:
+        files:
+          - package-lock.json
+      paths:
+        - node_modules
+      policy: pull
+  script:
+    - echo "vulnerabilities_high $(npm audit | grep -oE '[0-9]+ high' | grep -oE '[0-9]+' || echo 0)" > metrics.txt
+    - echo "vulnerabilities_medium $(npm audit | grep -oE '[0-9]+ moderate' | grep -oE '[0-9]+' || echo 0)" >> metrics.txt
+    - echo "vulnerabilities_low $(npm audit | grep -oE '[0-9]+ low' | grep -oE '[0-9]+' || echo 0)" >> metrics.txt
+  artifacts:
+    reports:
+      metrics: metrics.txt
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+registry:
+  stage: deploy
+  cache:
+    - key:
+        files:
+          - package.json
+      paths:
+        - node_modules
+      policy: pull
+    - key: $CI_PIPELINE_ID
+      paths:
+        - dist
+      policy: pull
+  before_script:
+    - VERSION=$(cat package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')
+    - if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ] && [ "$VERSION" != *"-$CI_COMMIT_BRANCH" ]; then VERSION="$VERSION-$(echo "$CI_COMMIT_BRANCH" | sed -E "s/[_/]/-/g")"; npm version --no-git-tag-version $VERSION; fi
+  script:
+    - PACKAGES=$(curl -s -H "PRIVATE-TOKEN:$DEPLOY_TOKEN" https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/packages)
+    - ID=$(node -pe "JSON.parse(process.argv[1]).find(p => p['version'] == process.argv[2])?.id || ''" $PACKAGES $VERSION)
+    - if [ -n "$ID" ]; then curl -s -X DELETE -H "PRIVATE-TOKEN:$DEPLOY_TOKEN" https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/packages/$ID; fi
+    - printf "@transmute:registry=https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/packages/npm/\n//$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/packages/npm/:_authToken=$DEPLOY_TOKEN" > .npmrc
+    - npm publish
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: $CI_COMMIT_BRANCH
+      when: manual
+      allow_failure: true
+
+tag:
+  stage: deploy
+  image:
+    name: alpine/git
+    entrypoint: [""]
+  cache: []
+  before_script:
+    - git remote set-url origin "https://ReleaseBot:$DEPLOY_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+  script:
+    - VERSION=$(cat package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')
+    - git tag -f $VERSION $CI_COMMIT_SHA
+    - git push -f origin $VERSION
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

@@ -1,0 +1,18 @@
+<h1 *ngIf="options.title" mat-dialog-title class="mb-3">{{options.title}}</h1>
+<div *ngIf="banner.text" class="alert" [classList]="banner.cssClass" role="alert">
+	{{banner.text}}
+</div>
+<div mat-dialog-content class="fh-dialog-form">
+	<ng-template addHost></ng-template>
+</div>
+<div mat-dialog-actions style="justify-content: end">
+	<mat-checkbox *ngIf="!options?.disableAddAnother" class="mb-0 me-3" [(ngModel)]="anotherOne" [ngModelOptions]="{standalone: true}">
+		{{options.addAnotherLabel}}
+	</mat-checkbox>
+	<button mat-button mat-dialog-close>
+		{{options.cancelLabel}}
+	</button>
+	<button mat-raised-button color="primary" type="submit" (click)="save()" [disabled]="loading">
+		{{options.saveLabel}}
+	</button>
+</div>

@@ -1,0 +1,37 @@
+<div class="d-flex align-items-center">
+	<mat-form-field appearance="outline" class="me-3">
+		<mat-label>Library</mat-label>
+		<mat-select [value]="selected" (valueChange)="selectionChanged($event)">
+			<mat-option class="fw-bold" value="">All</mat-option>
+			<mat-option *ngFor="let l of libraries" [value]="l">
+				<div class="d-flex align-items-center justify-content-between">
+					{{l.name}}
+				</div>
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<button *ngIf="selected" mat-mini-fab color="primary" [matMenuTriggerFor]="menu" class="mb-4">
+		<mat-icon>more_vert</mat-icon>
+	</button>
+	<button *ngIf="!selected" mat-mini-fab color="primary" (click)="scan(!selected ? null : selected)" class="mb-4" matTooltip="Scan">
+		<mat-icon>manage_search</mat-icon>
+	</button>
+	<button mat-mini-fab color="accent" (click)="edit()" matTooltip="New" class="ms-2 mb-4">
+		<mat-icon>add</mat-icon>
+	</button>
+</div>
+
+<mat-menu #menu="matMenu">
+	<button mat-menu-item (click)="scan(!selected ? null : selected)">
+		<mat-icon>manage_search</mat-icon>
+		<span>Scan</span>
+	</button>
+	<button *ngIf="selected" mat-menu-item (click)="edit(selected)">
+		<mat-icon>settings</mat-icon>
+		<span>Edit</span>
+	</button>
+	<button *ngIf="selected" mat-menu-item (click)="delete(selected)">
+		<mat-icon>delete</mat-icon>
+		<span>Delete</span>
+	</button>
+</mat-menu>
