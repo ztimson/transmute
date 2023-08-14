@@ -84,7 +84,7 @@ Once a worker is available, it will request a job from the server & complete it 
 
 <details>
 <summary>
-  <h3 style="display: inline">Production</h3>
+  <h3 id="production" style="display: inline">Production</h3>
 </summary>
 
 #### Prerequisites
@@ -101,7 +101,7 @@ Once a worker is available, it will request a job from the server & complete it 
 
 <details>
 <summary>
-  <h3 style="display: inline">Development</h3>
+  <h3 id="development" style="display: inline">Development</h3>
 </summary>
 
 #### Prerequisites
