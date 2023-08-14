@@ -1,15 +1,43 @@
-![Transmute](./docs/images/logo.png)
+<!-- Header -->
+<div id="top" align="center">
+  <br />
+  
+  <!-- Logo -->
+  <img src="https://git.zakscode.com/repo-avatars/b497daaf22a214fe6d6cc35b8ec217cd22401b668dff93dcfcc7557bd8a46d96" alt="Logo" width="200" height="200">
 
----
+  <!-- Title -->
+  ### Transmute
+  
+  <!-- Description -->
+  Distributed Video Transcoding
 
-A distributed video transcoder
+  <!-- Repo badges -->
+  [![Version](https://img.shields.io/badge/dynamic/json.svg?label=Version&style=for-the-badge&url=https://git.zakscode.com/api/v1/repos/ztimson/Transmute/tags&query=$[0].name)](https://git.zakscode.com/ztimson/Transmute/tags)
+  [![Pull Requests](https://img.shields.io/badge/dynamic/json.svg?label=Pull%20Requests&style=for-the-badge&url=https://git.zakscode.com/api/v1/repos/ztimson/Transmute&query=open_pr_counter)](https://git.zakscode.com/ztimson/Transmute/pulls)
+  [![Issues](https://img.shields.io/badge/dynamic/json.svg?label=Issues&style=for-the-badge&url=https://git.zakscode.com/api/v1/repos/ztimson/Transmute&query=open_issues_count)](https://git.zakscode.com/ztimson/template/issues)
 
-[![Latest Release](https://gitlab.zakscode.com/zakscode/transmute/transmute/-/badges/release.svg)](https://gitlab.zakscode.com/zakscode/transmute/transmute/-/releases)
+  <!-- Links -->
+  ---
+  <div>
+    <a href="https://git.zakscode.com/ztimson/Transmute/wiki" target="_blank">Documentation</a>
+    • <a href="https://git.zakscode.com/ztimson/Transmute/releases" target="_blank">Release Notes</a>
+    • <a href="https://git.zakscode.com/ztimson/Transmute/issues/new?template=.github%2fissue_template%2fbug.md" target="_blank">Report a Bug</a>
+    • <a href="https://git.zakscode.com/ztimson/Transmute/issues/new?template=.github%2fissue_template%2fenhancement.md" target="_blank">Request a Feature</a>
+  </div>
 
-[![Common](https://gitlab.zakscode.com/zakscode/transmute/common/badges/develop/pipeline.svg?key_text=Common)](https://gitlab.zakscode.com/zakscode/transmute/common)
-[![Client](https://gitlab.zakscode.com/zakscode/transmute/client/badges/develop/pipeline.svg?key_text=Client)](https://gitlab.zakscode.com/zakscode/transmute/client)
-[![Server](https://gitlab.zakscode.com/zakscode/transmute/server/badges/develop/pipeline.svg?key_text=Server)](https://gitlab.zakscode.com/zakscode/transmute/server)
-[![Worker](https://gitlab.zakscode.com/zakscode/transmute/worker/badges/develop/pipeline.svg?key_text=Worker)](https://gitlab.zakscode.com/zakscode/transmute/worker)
+  ---
+</div>
+
+## Table of Contents
+- [Transmute](#top)
+  - [About](#about)
+    - [Built With](#built-with)
+  - [Setup](#setup)
+    - [Production](#production)
+    - [Development](#development)
+  - [License](#license)
+
+## About
 
 ![Placeholder Screenshot](./docs/images/screenshot.png)
 
@@ -44,12 +72,16 @@ collect metadata. If this metadata doesn't match your settings or a healthcheck 
 
 Once a worker is available, it will request a job from the server & complete it using FFmpeg.
 
-## Documentation
-- [Wiki Docs](https://gitlab.zakscode.com/zakscode/transmute/transmute/-/wikis/home)
-- [Release Notes](https://gitlab.zakscode.com/zakscode/transmute/transmute/-/releases)
-- [Tickets & Issues](https://gitlab.zakscode.com/zakscode/transmute/transmute/-/issues)
+### Built With
+[![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular)](https://angular.io/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+[![Docker](https://img.shields.io/badge/Docker-384d54?style=for-the-badge&logo=docker)](https://docker.com/)
+[![Node](https://img.shields.io/badge/Node.js-000000?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
+[![Shell](https://img.shields.io/badge/Shell-000000?style=for-the-badge&logo=windowsterminal&logoColor=00ff00)](https://en.wikipedia.org/wiki/Shell_script)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 
 ## Setup
+
 <details>
 <summary>
   <h3 style="display: inline">Production</h3>
@@ -76,7 +108,7 @@ Once a worker is available, it will request a job from the server & complete it 
 - [Git](https://git-scm.com/downloads)
 - [Node](https://nodejs.org/en/download)
 - [FFmpeg](https://ffmpeg.org/download.html)
-- *[Docker](https://www.docker.com/products/docker-desktop/) (Optional)*
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
 #### Instructions
 1. Clone this project: `git clone `
@@ -95,3 +127,8 @@ Once a worker is available, it will request a job from the server & complete it 
 	- Start worker: `cd ../worker && npm run start`
 
 </details>
+
+## License
+Copyright © 2023 Zakary Timson | Available under MIT Licensing
+
+See the [license](./LICENSE) for more information.
