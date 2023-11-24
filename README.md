@@ -39,7 +39,7 @@
 
 ## About
 
-![Placeholder Screenshot](./docs/images/screenshot.png)
+<img alt="Screenshot" src="./docs/images/screenshot.png" width="75%" height="auto">
 
 Transmute provides a simple web based tool to manage your video library. Transmute will watch a directory and automatically
 transcode videos using [FFmpeg](https://ffmpeg.org/) & hardware acceloration (if available) so that your entire library 
